@@ -6,6 +6,7 @@ class Chat(models.Model):
 	users=models.ManyToManyField("account.MyUser",related_name="chatrooms")
 	created_on=models.DateTimeField(auto_now_add=True)
 	last_modified=models.DateTimeField(auto_now=True)
+	icon=models.ImageField("Group Photo",upload_to="static/profilepics",default="static/profilepics/pp.jpg")
 	title=models.CharField(max_length=20,default="Group name")
 	def __str__(self):
 		return self.title

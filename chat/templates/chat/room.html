@@ -1,0 +1,97 @@
+{% include "chat/tray.html" %}
+{% load staticfiles %}
+<script type="text/javascript" src=""></script>
+<style type="text/css">
+	.speechleft {
+  position: relative;
+  width: 60%;
+  text-align: left;
+  line-height: 20px;
+  background-color: rgba(195, 55, 55, 0.23);
+  border: 1px solid rgba(197, 119, 119, 0.37);
+  border-radius: 10px;
+  margin-left: 30px;
+  margin-top:15px;
+  margin-bottom: 5px;
+  padding:4px 20px;
+  box-shadow: 2px 2px 4px #888;
+  }
+  .speechleftag {
+  position: relative;
+  width: 60%;
+  text-align: left;
+  line-height: 20px;
+  background-color: rgba(195, 55, 55, 0.23);
+  border: 1px solid rgba(197, 119, 119, 0.37);
+  border-radius: 10px;
+  margin-left: 30px;
+  margin-top:5px;
+  margin-bottom: 5px;
+  padding:4px 20px;
+  box-shadow: 2px 2px 4px #888;
+  }
+  .speechright {
+  position: relative;
+  width: 60%;
+  text-align: left;
+  line-height: 20px;
+  background-color: rgba(152, 143, 222, 0.24);
+  border: 1px solid rgba(29, 55, 134, 0.29);
+  border-radius: 10px;
+  margin-left: 35%;
+  margin-top:15px;
+  margin-bottom: 5px;
+  padding:4px 20px;
+  box-shadow: 2px 2px 4px #888;
+  }
+  .speechrightag {
+  position: relative;
+  width: 60%;
+  text-align: left;
+  line-height: 20px;
+  background-color: rgba(152, 143, 222, 0.24);
+  border: 1px solid rgba(29, 55, 134, 0.29);
+  border-radius: 10px;
+  margin-left: 35%;
+  margin-top:5px;
+  margin-bottom: 5px;
+  padding:4px 20px;
+  box-shadow: 2px 2px 4px #888;
+  }
+}
+}
+</style>
+<div class="row">
+<div class="col s12">
+<div class="card">
+<div class="row"></div>
+<ul id="chat">
+    <li class="speechleft">
+      <p style="margin: 0px auto;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left </p>
+    </li>
+    <li class="speechleftag">
+      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+    </li>
+    <li class="speechright ">
+      <p style="margin: 0px auto;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left </p>
+    </li>
+    <li class="speechrightag">
+      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+    </li>
+    <li class="speechrightag">
+      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+    </li>
+    <li class="speechleft">
+      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+    </li>
+</ul>
+<div class="row"></div>
+<div class="row"></div>
+</div>
+</div>
+</div>
+<script>
+	$(document).ready(function(){
+		onload.init();
+	})
+</script>
