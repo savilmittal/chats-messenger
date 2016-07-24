@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<style type="text/css">
+	.messageform{
+  position: relative;
+  width: 95%;
+  text-align: left;
+  line-height: 20px;
+  background-color: rgba(184, 110, 238, 0);
+    border: 1px solid rgba(37, 33, 33, 0.31);
+  border-radius: 10px;
+  margin-left: 0px;
+  margin-top:15px;
+  margin-bottom: 5px;
+  padding:9px 20px;
+  box-shadow: 2px 2px 4px #888;
+  }
+  [contenteditable]:focus { outline: 0px solid transparent; }
+</style>
+<div style="display:flex;flex-direction: row;margin-top: 21px;
+    margin-bottom: 9px;">
+	<div>
+	<i class="material-icons center-align menu_links" style="width:40px;height: 40px;margin-left: 33px;margin-top:8px;margin-bottom:0px;margin-right: 7px;" >input</i>
+	</div>
+	<div   class="messageform menu_links"style="margin-top:5px;width:75%;">
+		<p id="messagebox" contenteditable="true" style="margin: 0px auto;"><strong style="color: rgba(30, 37, 35, 0.45);">Write Something...</strong></p>
+	</div>
+	<div>
+	<i id="messagesend"class="material-icons center-align menu_links" style="width:40px;height: 40px;margin-left: 10px;margin-top:8px;margin-bottom:0px;margin-right: 7px;" >fast_forward</i>
+	</div>
+</div>

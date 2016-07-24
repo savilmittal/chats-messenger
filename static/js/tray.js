@@ -1,16 +1,13 @@
 var onload=(function(){
-	var chats,chatids=[],user
-	function showchatmessages(id){
-		id=id.split('/')
-		console.log(id);
-		$.ajax({
-			url:"chat/get_chatroom_messages",
-			type:"POST",
-			data:{pk:id[2],type:id[1]},
-			success:function(json){
-				console.log(json)
-				$("#chat").html("")
-				for (var i =0 ;i<json.length;i++) {
+	var chats,chatids=[],chatmessages={},user,presentchatid,messageflag=1
+	function showchatmessageswrapper(json,id,len){
+		id=id.split('||')
+		var wer="/"+id[3]
+				console.log(chatmessages[presentchatid])
+				$("#chatheaderpic").attr("src",wer)
+				wer="<strong><b>"+id[4]+"<br></b></strong></span>Notification"
+				$("#chatheaderhtml").html(wer)
+				for (var i =len ;i<json.length;i++) {
 					var s=json[i]
 					var c=s["created_by"]
 					var sometext
@@ -28,11 +25,11 @@ var onload=(function(){
 					}
 					if(i>0&&json[i].created_by.pk==json[i-1].created_by.pk)
 					{
-						sometext="ag message\" id=\"msg/"+s["type"]+"/"+s["pk"]+"\">"+sometext
+						sometext="ag message\" id=\"msg||"+s["type"]+"||"+s["pk"]+"\">"+sometext
 					}
 					else
 					{
-						sometext=" message\" id=\"msg/"+s["type"]+"/"+s["pk"]+"\">"+sometext
+						sometext=" message\" id=\"msg||"+s["type"]+"||"+s["pk"]+"\">"+sometext
 					}
 					sometext+=s["text"]
 					var text
@@ -46,7 +43,37 @@ var onload=(function(){
 					}
 					text+="</p></li>"
 					$("#chat").append(text);
+
 				}
+				if(json.length==0)
+				{
+
+				}
+	}
+	function showchatmessages(id){
+		presentchatid=id
+		id=id.split('||')
+		console.log(chatmessages[id]);
+		if(chatmessages[id])
+		{
+			$("#chat").html("")
+			showchatmessageswrapper(chatmessages[presentchatid],presentchatid,0);
+			$(".message").click(function(e){
+				e.preventDefault();
+				console.log("hi")
+ 			});
+		}
+		else
+		{
+			$.ajax({
+			url:"chat/get_chatroom_messages",
+			type:"POST",
+			data:{pk:id[2],type:id[1]},
+			success:function(json){
+				console.log(json)
+				chatmessages[presentchatid]=json
+				$("#chat").html("")
+				showchatmessageswrapper(json,presentchatid,0);
 			},
 		}).done(function(){
 			$(".message").click(function(e){
@@ -55,6 +82,8 @@ var onload=(function(){
  			});
 		});
 	}
+
+}
 	function showchats(){
 		$.ajax({
 		    url : "chat/get_chats", // the endpoint
@@ -71,8 +100,8 @@ var onload=(function(){
 		        	{
 		        		var vc=c.user
 		        		console.log(vc)
-		        		text+="<li class=\"collection-item avatar chats\" id=\""
-		        		str="chat/"+c["type"]+"/"+c["pk"]
+		        		text+="<li class=\"collection-item avatar chats menu_links\" id=\""
+		        		str="chat||"+c["type"]+"||"+c["pk"]+"||"+vc["profilepic"]+"||"+vc["username"]
 		        		text+=str
 		        		text+="\"><img src=\"/"
 		        		text+=vc["profilepic"]
@@ -84,8 +113,8 @@ var onload=(function(){
 		        	}
 		        	else
 		        	{
-		        		text+="<li class=\"collection-item avatar  chats\" id=\""
-		        		str="chat/"+c["type"]+"/"+c["pk"]
+		        		text+="<li class=\"collection-item avatar  chats menu_links\" id=\""
+		        		str="chat||"+c["type"]+"||"+c["pk"]+"||"+c["icon"]+"||"+c["title"]
 		        		text+=str
 		        		text+="\"><img src=\"/"
 		        		text+=c["icon"]
@@ -96,6 +125,7 @@ var onload=(function(){
 		        		text+="</p></li>"
 		        	}
 		        	console.log(text)
+
 		        	$("#tray").append(text);
 		        	str='#'+str
 		        	chatids.push(str)
@@ -125,9 +155,70 @@ var onload=(function(){
 			},
 		});
 	}
+	function save_message(text){
+		console.log(text);
+		var chatid=presentchatid
+		chatid=chatid.split('||');
+		$.ajax({
+			url:"message/save_message",
+			type:"POST",
+			data:{pk:chatid[2],type:chatid[1],message:text},
+			success:function(json){
+				console.log(json)
+				chatmessages[presentchatid].push(json);
+				showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
+				$(".message").click(function(e){
+				e.preventDefault();
+				console.log("hi")
+ 				});
+			},
+		});
+	}
+	function post_message(){
+		$("#messagebox").keypress(function(e){
+			if(messageflag==1)
+			{
+				$("#messagebox").html("");
+				messageflag=0;
+			}
+			if(e.which == 13) {
+				e.preventDefault();
+				var text=$(this).html();
+		        if(text!="")
+		        {
+		        	save_message(text);
+		        }
+		        messageflag=1;
+        		$("#messagebox").html("");
+        		$("#messagebox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">Write Something...<strong>");
+		    }
+		});
+		$("#messagesend").click(function(e){
+			if(messageflag==1)
+			{
+				$("#messagebox").html("");
+				messageflag=0;
+			}
+	        e.preventDefault();
+				var text=$("#messagebox").html();
+		        if(text!="")
+		        {
+		        	save_message(text);
+		        }
+		        messageflag=1;
+        		$("#messagebox").html("");
+        		$("#messagebox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">Write Something...<strong>");
+
+		});
+		$("#messagebox").click(function(e){
+			$("#messagebox").html("");
+			messageflag=1;
+		});
+	}
 	function init(){
 		showchats();
 		get_useritself();
+		post_message();
 	}
 	return {
 		init:init
