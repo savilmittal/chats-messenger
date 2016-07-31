@@ -8,6 +8,11 @@ from django.core.mail import send_mail
 from django.template import RequestContext
 from django.core import serializers
 import json
+from django.utils.dateparse import parse_datetime
+import pytz
+import datetime
+from django.utils.timezone import utc
+
 # Create your views here.
 from account.models import MyUser
 from message.models import Message
@@ -57,7 +62,9 @@ def get_chats(request):
 			me="Start a conversation"
 		t["message"]=me
 		r.append(t)
-	data=q+r
+	s2 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # end time, together covers 1 day
+	g={"list":q+r,"lastnotification":str(s2)}
+	data=g
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
@@ -113,57 +120,144 @@ def get_useritself(request):
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
+@require_POST
+@csrf_exempt
 def create_singlechat(request):
-	userpk=request.GET['pk']
-	b=MyUser.objects.get(id=userpk)
-	owner=request.user
-	a=SingleChat()
-	a.save()
-	a.user.add(b,owner)
-	data={"message":"success"}
+	userpk=request.POST['username']
+	user=request.user
+	t={}
+	try:
+		b=MyUser.objects.get(username=userpk)
+		owner=request.user
+		a=SingleChat()
+		a.save()
+		a.user.add(b,owner)
+		t["type"]=1
+		t["pk"]= a.pk
+		t["last_modified"]=str(a.last_modified)
+		t["title"]=a.title
+		sw=MyUser.objects.get(id=b.id)
+		try:
+			me=a.chat_singlemessages.latest('created_at').text
+		except:
+			me="Start a conversation"
+		t["message"]=me
+		t['user']={"pk":sw.pk,"username":sw.username,"first_name":sw.first_name,"last_name":sw.last_name,"email":sw.email,"contact":sw.contact,"profilepic":str(sw.profilepic)}
+		data={"chat":t,"form":{"messageform":"Chat for this user added successfully"}}
+	except:
+		t["type"]=0
+		data={"chat":t,"form":{"messageform":"User not found.Try other Username"}}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
 def create_groupchat(request):
-	userpklist=request.GET['pk']
 	title=request.GET['title']
-	print(userpklist)
-	print(title)
-	q=[]
-	q=userpklist.split(',')
-	print(q)
-	b=[]
-	for i in q:
-		b.append(MyUser.objects.get(id=i))
 	owner=request.user
 	a=Chat(owner=owner,title=title)
 	a.save()
 	a.users.add(owner)
-	for x in b:
-		a.users.add(x)
-	data={"message":"success"}
+	t={}
+	t["type"]=0
+	t["pk"]= a.pk
+	t["last_modified"]=str(a.last_modified)
+	t["title"]=a.title
+	t["icon"]=str(a.icon)
+	t['users']=str(a.users.values_list('id', flat=True).order_by('id'))
+	try:
+		me=a.chat_messages.latest('created_at').text
+	except:
+		me="Start a conversation"
+	t["message"]=me
+	data={"chat":t,"form":{"messageform":"Group created successfully"}}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
 def add_groupchat(request):
-	pk=request.GET['pk']
+	username=request.GET['username']
 	chat=request.GET['chatpk']
-	print(pk)
-	print(chat)
 	a=Chat.objects.get(id=chat)
-	b=MyUser.objects.get(id=pk)
-	a.users.add(b)
-	data={"message":"success"}
+	b=MyUser.objects.get(username=username)
+	try:
+		a.users.get(username=username)
+		data={"messageform":"Member already added to Group."}
+	except :
+		a.users.add(b)
+		data={"messageform":"Member successfully added to Group."}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
 def exit_groupchat(request):
-	pk=request.GET['pk']
+	pk=request.GET['chatpk']
 	user=request.user
 	print(pk)
 	print(user)
 	a=Chat.objects.get(id=pk)
+	print(a)
 	a.users.remove(user)
-	data={"message":"success"}
+	x=a.users.all().count();
+	print(x)
+	if x==0:
+		a.delete();
+	else:
+		y=a.users.all();
+		y=y[0];
+		print(y)
+		a.owner=y;
+	data={"messageform":"successfully removed"}
 	return HttpResponse(json.dumps(data),content_type="application/json")
-
+@login_required
+def notifications(request):
+	date=request.GET['laststamp']
+	user=request.user
+	s1 = date # start time
+	s2 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # end time, together covers 1 day
+	n1 = parse_datetime(s1) # naive object
+	n2 = parse_datetime(s2)
+	a=user.chatrooms.all()
+	b=user.singlechatrooms.all()
+	r=[]
+	for x in b:
+		t={}
+		we=x.user.all()
+		if we[0].id==user.pk:
+			te=we[1].id
+		else :
+			te=we[0].id
+		sw=MyUser.objects.get(id=te)
+		t["id"]="chatx1x2x3x41x1x2x3x4"+str(x.pk)+"x1x2x3x4"+str(sw.profilepic)+"x1x2x3x4"+sw.username
+		y=x.chat_singlemessages.filter(created_at__range=(n1,n2))
+		s=[]
+		for z in y:
+			d={}
+			d["text"]=z.text
+			w=z.created_by
+			if w.username!=user.username:
+				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+				d["created_at"]=str(z.created_at)
+				d["chat"]=z.chat.id
+				d["pk"]=z.id
+				d["type"]=1
+				s.append(d)
+		t["messages"]=s;
+		r.append(t);
+	for x in a:
+		t={}
+		t["id"]="chatx1x2x3x40x1x2x3x4"+str(x.pk)+"x1x2x3x4"+str(x.icon)+"x1x2x3x4"+x.title
+		y=x.chat_messages.filter(created_at__range=(n1,n2))
+		s=[]
+		for z in y:
+			d={}
+			d["text"]=z.text
+			w=z.created_by
+			if w.username!=user.username:
+				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+				d["created_at"]=str(z.created_at)
+				d["chat"]=z.chat.id
+				d["pk"]=z.id
+				d["type"]=0
+				s.append(d)
+		t["messages"]=s;
+		r.append(t);
+	g={"list":r,"lastnotification":str(s2)}
+	data=g;
+	return HttpResponse(json.dumps(data),content_type="application/json")

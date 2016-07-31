@@ -13,7 +13,3 @@ from message.models import Message
 from message.models import SingleMessage
 from chat.models import Chat
 from chat.models import SingleChat
-
-@login_required
-def home(request):
-	return render(request,"chat/room.html")

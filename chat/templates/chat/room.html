@@ -1,6 +1,4 @@
-{% include "chat/tray.html" %}
 {% load staticfiles %}
-<script type="text/javascript" src=""></script>
 <style type="text/css">
 	.speechleft {
   position: relative;
@@ -61,39 +59,28 @@
 }
 }
 </style>
-<div class="row">
-<div class="col s12">
-<div class="card">
-<div class="row"></div>
+<div id="room" class="card col s6" style="margin: 20px;margin-left: 10px;">
 {% include 'chat/chatheader.html' %}
-<ul id="chat">
+<ul id="chat" style="height: 465px;
+    overflow-y: scroll;overflow-x:none;">
     <li class="speechleft">
-      <p style="margin: 0px auto;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left  kjjjj jjjjjjjj jjjjjjjjjj kkkkkkkkkk kkkkkkkk kkkmmmmmmmmm</p>
     </li>
     <li class="speechleftag">
-      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;">message should be a bigger one on left </p>
     </li>
     <li class="speechright ">
-      <p style="margin: 0px auto;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;"><span><strong><b>Savil Mittal<br></b></strong></span>message should be a bigger one on left </p>
     </li>
     <li class="speechrightag">
-      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;">message should be a bigger one on left </p>
     </li>
     <li class="speechrightag">
-      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;">message should be a bigger one on left </p>
     </li>
     <li class="speechleft">
-      <p style="margin: 0px auto;">message should be a bigger one on left </p>
+      <p style="margin: 0px auto;word-wrap: break-word;">message should be a bigger one on left </p>
     </li>
 </ul>
 {% include 'chat/messageform.html' %}
-<div class="row"></div>
-
 </div>
-</div>
-</div>
-<script>
-	$(document).ready(function(){
-		onload.init();
-	})
-</script>

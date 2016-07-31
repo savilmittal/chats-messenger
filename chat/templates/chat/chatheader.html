@@ -1,10 +1,17 @@
 {% load staticfiles %}
-<div style="display:flex;flex-direction: row;">
+<div style="display:flex;flex-direction: row;margin-top: 10px;">
 	<div>
 			<img id="chatheaderpic"src="{% static 'profilepics/pp.jpg' %}" style="width:40px;height: 40px;margin-left: 33px;margin-top:8px;margin-bottom:5px;margin-right: 20px;" class="center-align circle">
 	</div>
+	<div style="display:flex;flex-direction: row;justify-content: space-between;width: 100%;">
 	<div  id="chatheaderhtml"style="margin-top:5px;font-size:16px;">
 		<strong><b>Title<br></b></strong></span>
 		Notification
 	</div>
+	<div><i class="material-icons menu_links dropdown dropdown-button small" data-activates='dropdown2'style="margin-right: 25px;margin-top: 2px;" >link</i></div>
+	</div>
+	<ul id='dropdown2' class='dropdown-content' >
+    <li id="chataddmember" class="dropgroup"><a href="#!" style="color: black;">Add Member</a></li>
+    <li id="chatexitgroup" class="dropgroup"><a href="#!" style="color: black;">Exit Group</a></li>
+  	</ul>
 </div>

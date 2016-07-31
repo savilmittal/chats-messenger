@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<style type="text/css">
+	#dropdown1:active{
+		width:200px;
+	top: 65px;
+	left: 43.484px;
+	}
+</style>
+<div style="display:flex;flex-direction: row;margin-top: 10px;">
+	<div>
+			<img id="trayheaderpic"src="{% static 'profilepics/pp.jpg' %}" style="width:40px;height: 40px;margin-left: 33px;margin-top:8px;margin-bottom:5px;margin-right: 20px;" class="center-align circle">
+	</div>
+	<div style="display:flex;flex-direction: row;margin-top: 10px;justify-content: space-between;width: 100%;">
+	<div  id="trayheaderhtml" style="margin-top:5px;font-size:16px;">
+	</div>
+	<div><i class="material-icons menu_links dropdown dropdown-button" data-activates='dropdown1'style="margin-right: 20px;" >dns</i></div>
+
+  <!-- Dropdown Structure -->
+  <ul id='dropdown1' class='dropdown-content' >
+    <li id="hallel"><a href="#!" style="color: black;">Add New Chat</a></li>
+    <li id="halldropgroup"><a href="#!" style="color: black;">Create a Group</a></li>
+  </ul>
+	</div>
+</div>

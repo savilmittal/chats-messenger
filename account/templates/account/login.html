@@ -1,0 +1,31 @@
+{% load staticfiles %}
+{% include "head.html" %}
+<div class="row"></div>
+<div class="row"></div>
+<div class="row">
+<div class="col s12 m8 l8 offset-m2 offset-l2">
+<div class="card">
+	<form action="{% url 'login' %}" method='POST'>
+			{% csrf_token %}
+					<div class="col s8 m6 l6 offset-s2 offset-m3 offset-l3">{{x}}</div>
+			        {% for field in f %}
+        						<div class="input-field col s8 m6 l6 offset-s2 offset-m3 offset-l3">
+				                    {{field}}
+				                    <label>{{ field.label }}</label> 
+			                	</div>
+			        {% endfor %}
+			        <div class="row"></div>
+					<div class="row">
+			        <button class="btn waves-effect waves-light col s6 m4 l4 offset-s3 offset-m4 offset-l4" type="submit" name="action">Login
+					    <i class="material-icons right">send</i>
+					</button>
+					 </div>
+					 <div class="row">
+					 <a href="{% url 'signup' %}"class="waves-effect waves-light btn  col s6 m4 l4 offset-s3 offset-m4 offset-l4">SignUp</a>
+					 </div>
+					 
+	</form>
+<div class="row"></div>
+	</div>
+</div>
+</div>

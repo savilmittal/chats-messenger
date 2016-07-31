@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<style type="text/css">
+	/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 3px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(136, 136, 136, 0.21); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(136, 136, 136, 0.21); 
+}
+</style>
+{% include "head.html" %}
+<div class="row">
+<div style="display: flex;flex-direction: row">
+{% include "chat/tray.html" %}
+{% include "chat/hall.html" %}
+{% include "chat/room.html" %}
+{% include "chat/groupchat.html" %}
+</div>
+</div>
+<script>
+	$(document).ready(function(){
+		onload.init();
+	})
+</script>
