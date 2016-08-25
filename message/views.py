@@ -34,7 +34,7 @@ def save_message(request):
 	else :
 		a=Chat.objects.get(id=pk)
 		b=Message(text=message,created_by=request.user,chat=a)
-		b.save()
+		b.select_for_update(nowait=False).save()
 		d["type"]=0
 	d["text"]=b.text
 	w=b.created_by

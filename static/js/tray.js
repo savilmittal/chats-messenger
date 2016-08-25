@@ -1,5 +1,5 @@
 var onload=(function(){
-	var chats={},chatids=[],chatmessages={},user,presentchatid="0",messageflag=1,userflag=1,groupflag=1,userformval="Enter a username",groupformval="Enter Group Name"
+	var chats={},chatids=[],chatmessages={},user,presentchatid="0",messageflag=1,userflag=1,groupflag=1,userformval="Enter a username",groupformval="Enter Group Name",addingchatmessagesbeforenotificationcall=1;
 	var grouproomflag=1,grouproomformval="Enter a username",datestart
 	function showchatmessageswrapper(json,id,len){
 		id=id.split('x1x2x3x4')
@@ -54,10 +54,14 @@ var onload=(function(){
 				}
 	}
 	function showchatmessages(id){
+		aid=id
+		$("#default").hide();
+		$("#room").show();
+		if(addingchatmessagesbeforenotificationcall==1)
 		presentchatid=id
 		id=id.split('x1x2x3x4')
 		//console.log(chatmessages[presentchatid]);
-		if(chatmessages[presentchatid])
+		if(addingchatmessagesbeforenotificationcall==1&&chatmessages[presentchatid])
 		{
 			$("#chat").html("")
 			showchatmessageswrapper(chatmessages[presentchatid],presentchatid,0);
@@ -74,9 +78,14 @@ var onload=(function(){
 			data:{pk:id[2],type:id[1]},
 			success:function(json){
 				//console.log(json)
+				if(addingchatmessagesbeforenotificationcall==1)
 				chatmessages[presentchatid]=json
+				else
+				chatmessages[aid]=json
 				$("#chat").html("")
+				if(addingchatmessagesbeforenotificationcall==1)
 				showchatmessageswrapper(json,presentchatid,0);
+				addingchatmessagesbeforenotificationcall=1;
 			},
 		}).done(function(){
 			$(".message").click(function(e){
@@ -632,17 +641,30 @@ var onload=(function(){
 						var x=data[i]
 						var pid=x["id"]
 						var mess=x["messages"]
-						console.log(mess.length)
+						//console.log(mess.length)
 						if(mess.length>0){
 							for (var j = 0; j < mess.length; j++) {
-								console.log(mess[j]);
-								console.log(pid)
-								console.log(presentchatid)
-								console.log(chatmessages[pid])
-								chatmessages[pid].push(mess[j]);
-								if(pid==presentchatid)
+								//console.log(mess[j]);
+								//console.log(pid)
+								//console.log(presentchatid)
+								//console.log(chatmessages[pid])
+								if(chatmessages[pid])
 								{
-									showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
+									chatmessages[pid].push(mess[j]);
+									if(pid==presentchatid)
+									{
+										showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
+									}
+								}
+								else
+								{
+									addingchatmessagesbeforenotificationcall=0;
+									showchatmessages(pid);
+									if(pid==presentchatid)
+									{
+										showchatmessageswrapper(chatmessages[presentchatid],presentchatid,0);
+									}
+									break;
 								}
 							}
 						}
@@ -652,9 +674,14 @@ var onload=(function(){
         		setTimeout(notification,5000);
 			});
 		}
+		function defau()
+		{
+			$("#room").hide();
+		}
 		function init(){
 		showdropdown();
 		showchats();
+		defau();
 		get_useritself();
 		post_message();
 		addchatuser();
