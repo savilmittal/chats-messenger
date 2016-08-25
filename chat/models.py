@@ -1,9 +1,6 @@
 from django.db import models
 from django.utils import timezone
-import pytz
 
-timezone.activate(pytz.timezone("Asia/Kolkata"))
-timezone.localtime(timezone.now())
 # Create your models here.,
 class Chat(models.Model):
 	owner=models.ForeignKey("account.MyUser",related_name="admin",null=True,blank=True)

@@ -9,7 +9,6 @@ from django.template import RequestContext
 from django.core import serializers
 import json
 from django.utils.dateparse import parse_datetime
-import pytz
 import datetime
 from django.utils.timezone import utc
 

@@ -1,9 +1,6 @@
 from django.db import models
 from django.utils import timezone
-import pytz
 
-timezone.activate(pytz.timezone("Asia/Kolkata"))
-timezone.localtime(timezone.now())
 # Create your models here.
 class Message(models.Model):
 	text=models.CharField(max_length=1000)
