@@ -57,6 +57,7 @@ def user_signup(request):
 		user=f.save(commit=False)
 		user.set_password(f.cleaned_data['password'])
 		user.save()
+		
 		message='Welcome to Quora.Your signup is successful.'
 		return user_welcome(request,message)
 	context={'f':f}

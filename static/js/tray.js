@@ -233,9 +233,10 @@ var onload=(function(){
 			if(messageflag==1)
 			{
 				$("#messagebox").html("");
-				messageflag=0;
 			}
-	        e.preventDefault();
+			else
+			{
+				e.preventDefault();
 				var text=$("#messagebox").html();
 		        if(text!=""&&text!="<strong style=\"color: rgba(30, 37, 35, 0.45);\">Write Something...<strong>")
 		        {
@@ -245,13 +246,15 @@ var onload=(function(){
         		$("#messagebox").html("");
         		$("#messagebox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">Write Something...<strong>");
 
+			}
+
 		});
 		$("#messagebox").click(function(e){
-			$("#messagebox").html("");
-			messageflag=1;
-		});
-		$("#messagebox").focusout(function(){
-			$("#messagebox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">Write Something...<strong>");
+			if(messageflag==1)
+			{
+				$("#messagebox").html("");
+				messageflag=0;
+			}
 		});
 	}
 	function showdropdown(){
@@ -352,9 +355,10 @@ var onload=(function(){
 			if(userflag==1)
 			{
 				$("#userbox").html("");
-				userflag=0;
 			}
-	        e.preventDefault();
+			else
+			{
+	        	e.preventDefault();
 				var text=$("#userbox").html();
 				//console.log("hanji"+text);
 		        if(text!="")
@@ -365,16 +369,15 @@ var onload=(function(){
         		$("#userbox").html("");
         		$("#userbox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+userformval+"<strong>");
         		userformval="Enter a username";
+        	}
 
 		});
 		$("#userbox").click(function(e){
-			$("#userbox").html("");
-			userflag=1;
-		});
-		$("#userbox").focusout(function(){
 			if(userflag==1)
-			$("#userbox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+userformval+"<strong>");
-			userflag=1;
+			{
+				$("#userbox").html("");
+				userflag=0;
+			}
 		});
 	}
 	function save_groupchat(text){
@@ -447,9 +450,10 @@ var onload=(function(){
 			if(groupflag==1)
 			{
 				$("#groupbox").html("");
-				groupflag=0;
 			}
-	        e.preventDefault();
+			else
+			{
+	        	e.preventDefault();
 				var text=$("#groupbox").html();
 				//console.log("hanjikihalchal"+text);
 		        if(text!="")
@@ -460,18 +464,16 @@ var onload=(function(){
         		$("#groupbox").html("");
         		$("#groupbox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+groupformval+"<strong>");
         		groupformval="Enter Group Name";
-
+        	}
 		});
 		$("#groupbox").click(function(e){
-			$("#groupbox").html("");
-			groupflag=1;
-		});
-		$("#groupbox").focusout(function(){
 			if(groupflag==1)
-			$("#groupbox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+groupformval+"<strong>");
-			groupflag=1;
-		});
-		}
+			{
+				$("#groupbox").html("");
+				groupflag=0;
+			}
+		});	
+	}
 		function hall(){
 			$(".hallex").hide();
 			$("#hallel").click(function(){
@@ -602,9 +604,10 @@ var onload=(function(){
 			if(grouproomflag==1)
 			{
 				$("#grouproombox").html("");
-				grouproomflag=0;
 			}
-	        e.preventDefault();
+			else
+			{
+	        	e.preventDefault();
 				var text=$("#grouproombox").html();
 		        if(text!="")
 		        {
@@ -615,16 +618,14 @@ var onload=(function(){
         		$("#grouproombox").html("");
         		$("#grouproombox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+grouproomformval+"<strong>");
         		grouproomformval="Enter a username";
-
+        	}
 		});
 		$("#grouproombox").click(function(e){
-			$("#grouproombox").html("");
-			grouproomflag=1;
-		});
-		$("#grouproombox").focusout(function(){
 			if(grouproomflag==1)
-			$("#grouproombox").html("<strong style=\"color: rgba(30, 37, 35, 0.45);\">"+grouproomformval+"<strong>");
-			grouproomflag=1;
+			{
+				$("#grouproombox").html("");
+				grouproomflag=0;
+			}
 		});
 	}
 		function notification(){

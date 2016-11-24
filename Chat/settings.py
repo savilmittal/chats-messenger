@@ -140,6 +140,9 @@ EMAIL_HOST_USER = 'savilpython@gmail.com' #my gmail username
 EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+
+
+#deployment
 import dj_database_url
 # Update database configuration with $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
@@ -156,6 +159,7 @@ ALLOWED_HOSTS = ['*']
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+MEDIA_ROOT = os.path.dirname(os.path.dirname(os.path.join(PROJECT_ROOT,'static')))
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (

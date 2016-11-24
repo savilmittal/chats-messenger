@@ -209,9 +209,9 @@ def notifications(request):
 	date=request.GET['laststamp']
 	user=request.user
 	s1 = date # start time
-	s2 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") # end time, together covers 1 day
+	s2 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f") # end time, together covers 1 day
 	n1 = parse_datetime(s1) 
-	n2 = parse_datetime(s2)
+	n2 = parse_datetime(s2)-datetime.timedelta(microseconds=1)
 	a=user.chatrooms.all()
 	b=user.singlechatrooms.all()
 	r=[]
