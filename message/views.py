@@ -14,6 +14,18 @@ from message.models import Message
 from chat.models import Chat
 from chat.models import SingleChat
 from message.models import SingleMessage
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+from base64 import *
+from Crypto import Random
+
+def decrypt(key, text):
+    rsakey = RSA.importKey(key)
+    rsakey = PKCS1_v1_5.new(rsakey)
+    sentinel = Random.new().read(1024)
+    d = rsakey.decrypt(text,sentinel)
+    return d
+
 
 
 @login_required
@@ -28,6 +40,16 @@ def save_message(request):
 	d={}
 	if ty=='1':
 		a=SingleChat.objects.get(id=pk)
+		lusers=a.user.all()          #decryption starts
+		keyuser={}
+		if lusers[0].id==request.user.id:
+			keyuser=lusers[1]
+		else:
+			keyuser=lusers[0]
+		key=keyuser.privatekey
+		message = b64decode(message.encode())
+		message=decrypt(key,message)#decryption ends
+		message=message.decode("utf-8")
 		b=SingleMessage(text=message,created_by=request.user,chat=a)
 		b.save()
 		d["type"]=1

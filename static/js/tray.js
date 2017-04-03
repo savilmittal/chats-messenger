@@ -194,21 +194,67 @@ var onload=(function(){
 		//trayid=trayid[0]+x+x+"."+trayid[1]
 		//console.log(trayid);
 		$("#"+trayid[0]+"\\/"+trayid[1]+"\\/"+trayidd[0]+"\\."+trayidd[1]+" p").text(text);
+		console.log(text);
 
-		$.ajax({
-			url:"/message/save_message",
-			type:"POST",
-			data:{pk:chatid[2],type:chatid[1],message:text},
+		var publickey;
+
+		//get public key
+		if(chatid[1]=='1')
+		{
+			$.ajax({
+			url:"/chat/publickey",
+			type:"GET",
+			data:{pk:chatid[2]},
 			success:function(json){
-				//console.log(json)
-				chatmessages[presentchatid].push(json);
-				showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
-				$(".message").click(function(e){
-				e.preventDefault();
-				//console.log("hi")
- 				});
-			},
-		});
+				
+ 					publickey=json.key;
+				},
+			}).done(function(){
+				//encryption starts
+				var encrypt = new JSEncrypt();
+		        encrypt.setPublicKey(publickey);
+		        console.log(publickey);
+		        var encrypted = encrypt.encrypt(text);
+				console.log(encrypted);
+				text=encrypted;
+				//encryption ends
+				$.ajax({
+					url:"/message/save_message",
+					type:"POST",
+					data:{pk:chatid[2],type:chatid[1],message:text},
+					success:function(json){
+					//console.log(json)
+					chatmessages[presentchatid].push(json);
+					showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
+					$(".message").click(function(e){
+					e.preventDefault();
+					//console.log("hi")
+		 				});
+					},
+				});
+			});
+
+		}
+		else
+		{
+			$.ajax({
+					url:"/message/save_message",
+					type:"POST",
+					data:{pk:chatid[2],type:chatid[1],message:text},
+					success:function(json){
+					//console.log(json)
+					chatmessages[presentchatid].push(json);
+					showchatmessageswrapper(chatmessages[presentchatid],presentchatid,chatmessages[presentchatid].length-1);
+					$(".message").click(function(e){
+					e.preventDefault();
+					//console.log("hi")
+ 						});
+					},
+				});
+			
+		}
+		
+		
 	}
 	function post_message(){
 		$("#messagebox").keypress(function(e){

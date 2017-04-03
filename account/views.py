@@ -14,6 +14,10 @@ from chat.models import SingleChat
 
 from .forms import LoginForm,SignUp,ChangePassword,UsernameFp
 import random
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+from base64 import *
+from Crypto import Random
 
 @require_GET
 def show_login(request):
@@ -56,9 +60,13 @@ def user_signup(request):
 	if f.is_valid():
 		user=f.save(commit=False)
 		user.set_password(f.cleaned_data['password'])
+		private = RSA.generate(1024)
+		public  = private.publickey()
+		user.privatekey=private.exportKey('PEM')
+		user.publickey=public.exportKey(format='PEM')
 		user.save()
 		
-		message='Welcome to Quora.Your signup is successful.'
+		message='Welcome to Chat-messenger.Your signup is successful.'
 		return user_welcome(request,message)
 	context={'f':f}
 	return render(request,'account/signup.html',context)

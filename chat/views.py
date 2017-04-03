@@ -260,3 +260,21 @@ def notifications(request):
 	g={"list":r,"lastnotification":str(s2)}
 	data=g;
 	return HttpResponse(json.dumps(data),content_type="application/json")
+
+
+@require_GET
+def get_public_key(request):
+	pk=request.GET['pk']
+	a=SingleChat.objects.get(id=pk)
+	lusers=a.user.all()         #decryption starts
+	keyuser={}
+	print (lusers)
+	print (request.user.id)
+	if lusers[0].id==request.user.id:
+		keyuser=lusers[1]
+	else:
+		keyuser=lusers[0]
+	key=keyuser.publickey
+	data={"key":key}
+	return HttpResponse(json.dumps(data),content_type="application/json")
+
