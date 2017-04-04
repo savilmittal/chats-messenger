@@ -44,7 +44,7 @@ def get_chats(request):
 		except:
 			me="Start a conversation"
 		t["message"]=me
-		t['user']={"pk":sw.pk,"username":sw.username,"first_name":sw.first_name,"last_name":sw.last_name,"email":sw.email,"contact":sw.contact,"profilepic":str(sw.profilepic)}
+		t['user']={"pk":sw.pk,"username":sw.username,"first_name":sw.first_name,"last_name":sw.last_name,"email":sw.email,"contact":sw.contact,"profilepic":"media/"+str(sw.profilepic)}
 		q.append(t)
 	r=[]
 	for x in a:
@@ -81,7 +81,7 @@ def get_chatroom_messages(request):
 			d={}
 			d["text"]=x.text
 			w=x.created_by
-			d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+			d["created_by"]={"pk":w.id,"username":w.username,"profilepic":"media/"+str(w.profilepic)}
 			d["created_at"]=str(x.created_at)
 			d["chat"]=x.chat.id
 			d["pk"]=x.id
@@ -93,7 +93,7 @@ def get_chatroom_messages(request):
 			d={}
 			d["text"]=x.text
 			w=x.created_by
-			d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+			d["created_by"]={"pk":w.id,"username":w.username,"profilepic":"media/"+str(w.profilepic)}
 			d["created_at"]=str(x.created_at)
 			d["chat"]=x.chat.id
 			d["pk"]=x.id
@@ -107,7 +107,7 @@ def get_user(request):
 	user=request.GET['user']
 	print(user)
 	a=MyUser.objects.get(username=user)
-	data={"pk":a.pk,"username":a.username,"first_name":a.first_name,"last_name":a.last_name,"email":a.email,"contact":a.contact,"profilepic":str(a.profilepic)}
+	data={"pk":a.pk,"username":a.username,"first_name":a.first_name,"last_name":a.last_name,"email":a.email,"contact":a.contact,"profilepic":"media/"+str(a.profilepic)}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
@@ -115,7 +115,7 @@ def get_user(request):
 @csrf_exempt
 def get_useritself(request):
 	a=MyUser.objects.get(username=request.user)
-	data={"pk":a.pk,"username":a.username,"first_name":a.first_name,"last_name":a.last_name,"email":a.email,"contact":a.contact,"profilepic":str(a.profilepic)}
+	data={"pk":a.pk,"username":a.username,"first_name":a.first_name,"last_name":a.last_name,"email":a.email,"contact":a.contact,"profilepic":"media/"+str(a.profilepic)}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
@@ -141,7 +141,7 @@ def create_singlechat(request):
 		except:
 			me="Start a conversation"
 		t["message"]=me
-		t['user']={"pk":sw.pk,"username":sw.username,"first_name":sw.first_name,"last_name":sw.last_name,"email":sw.email,"contact":sw.contact,"profilepic":str(sw.profilepic)}
+		t['user']={"pk":sw.pk,"username":sw.username,"first_name":sw.first_name,"last_name":sw.last_name,"email":sw.email,"contact":sw.contact,"profilepic":"media/"+str(sw.profilepic)}
 		data={"chat":t,"form":{"messageform":"Chat for this user added successfully"}}
 	except:
 		t["type"]=0
@@ -231,7 +231,7 @@ def notifications(request):
 			d["text"]=z.text
 			w=z.created_by
 			if w.username!=user.username:
-				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":"media/"+str(w.profilepic)}
 				d["created_at"]=str(z.created_at)
 				d["chat"]=z.chat.id
 				d["pk"]=z.id
@@ -249,7 +249,7 @@ def notifications(request):
 			d["text"]=z.text
 			w=z.created_by
 			if w.username!=user.username:
-				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":str(w.profilepic)}
+				d["created_by"]={"pk":w.id,"username":w.username,"profilepic":"media/"+str(w.profilepic)}
 				d["created_at"]=str(z.created_at)
 				d["chat"]=z.chat.id
 				d["pk"]=z.id

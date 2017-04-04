@@ -16,10 +16,13 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from account.views import show_login
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     url(r'^$',show_login),
     url(r'^admin/', admin.site.urls),
     url(r'^chat/',include('chat.urls')),
     url(r'^message/',include('message.urls')),
     url(r'^account/',include('account.urls')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
