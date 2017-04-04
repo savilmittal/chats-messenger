@@ -223,7 +223,7 @@ def notifications(request):
 		else :
 			te=we[0].id
 		sw=MyUser.objects.get(id=te)
-		t["id"]="chatx1x2x3x41x1x2x3x4"+str(x.pk)+"x1x2x3x4"+str(sw.profilepic)+"x1x2x3x4"+sw.username
+		t["id"]="chatx1x2x3x41x1x2x3x4"+str(x.pk)+"x1x2x3x4"+"media/"+str(sw.profilepic)+"x1x2x3x4"+sw.username
 		y=x.chat_singlemessages.filter(created_at__range=(n1,n2))
 		s=[]
 		for z in y:
@@ -259,6 +259,7 @@ def notifications(request):
 		r.append(t);
 	g={"list":r,"lastnotification":str(s2)}
 	data=g;
+	print(data)
 	return HttpResponse(json.dumps(data),content_type="application/json")
 
 
@@ -275,6 +276,7 @@ def get_public_key(request):
 	else:
 		keyuser=lusers[0]
 	key=keyuser.publickey
+	print (key)
 	data={"key":key}
 	return HttpResponse(json.dumps(data),content_type="application/json")
 

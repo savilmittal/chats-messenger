@@ -60,7 +60,7 @@ var onload=(function(){
 		if(addingchatmessagesbeforenotificationcall==1)
 		presentchatid=id
 		id=id.split('x1x2x3x4')
-		//console.log(chatmessages[presentchatid]);
+		//console.log("in show");
 		if(addingchatmessagesbeforenotificationcall==1&&chatmessages[presentchatid])
 		{
 			$("#chat").html("")
@@ -77,11 +77,12 @@ var onload=(function(){
 			type:"POST",
 			data:{pk:id[2],type:id[1]},
 			success:function(json){
-				//console.log(json)
+				///console.log(json)
 				if(addingchatmessagesbeforenotificationcall==1)
 				chatmessages[presentchatid]=json
 				else
 				chatmessages[aid]=json
+				//console.log(chatmessages[presentchatid]);
 				$("#chat").html("")
 				if(addingchatmessagesbeforenotificationcall==1)
 				showchatmessageswrapper(json,presentchatid,0);
@@ -94,7 +95,7 @@ var onload=(function(){
  			});
 		});
 	}
-
+	
 }
 	function showchats(){
 		$.ajax({
@@ -692,11 +693,12 @@ var onload=(function(){
 						if(mess.length>0){
 							for (var j = 0; j < mess.length; j++) {
 								//console.log(mess[j]);
-								//console.log(pid)
-								//console.log(presentchatid)
-								//console.log(chatmessages[pid])
+						//		//console.log(pid)
+						//		console.log(presentchatid)
+						//		console.log(chatmessages[pid])
 								if(chatmessages[pid])
 								{
+							//		console.log("if")
 									chatmessages[pid].push(mess[j]);
 									if(pid==presentchatid)
 									{
@@ -705,13 +707,15 @@ var onload=(function(){
 								}
 								else
 								{
+								//	console.log("else")
 									addingchatmessagesbeforenotificationcall=0;
 									showchatmessages(pid);
+								//	console.log(chatmessages[pid])
 									if(pid==presentchatid)
-									{
+									{	
 										showchatmessageswrapper(chatmessages[presentchatid],presentchatid,0);
 									}
-									break;
+									//break;
 								}
 							}
 						}

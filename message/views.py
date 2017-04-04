@@ -64,4 +64,5 @@ def save_message(request):
 	d["created_at"]=str(b.created_at)
 	d["chat"]=b.chat.id
 	d["pk"]=b.id
+	print(message)
 	return HttpResponse(json.dumps(d),content_type="application/json")
