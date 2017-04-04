@@ -62,6 +62,9 @@ def user_signup(request):
 		user.set_password(f.cleaned_data['password'])
 		private = RSA.generate(1024)
 		public  = private.publickey()
+		qw=random.randint(1, 4)
+		qw=str(qw)
+		user.profilepic="profilepics"+"/anonymous"+qw+".jpg"
 		user.privatekey=private.exportKey('PEM')
 		user.publickey=public.exportKey(format='PEM')
 		user.save()

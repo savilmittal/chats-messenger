@@ -9,14 +9,14 @@
 			{% csrf_token %}
 			        {% for field in f %}
 			        			{% if field.name == "profilepic" %}
-        						<div class="file-field  col s8 m6 l6 offset-s2 offset-m3 offset-l3">
+        			<!--			<div class="file-field  col s8 m6 l6 offset-s2 offset-m3 offset-l3">
 								  
 								  
 								    
 								    <label>{{ field.label }}</label>
 								    {{field}}
 
-								</div>
+								</div>-->
 			                	{% else %}
 								<div class="input-field col s8 m6 l6 offset-s2 offset-m3 offset-l3">
 				                    {{field}}
